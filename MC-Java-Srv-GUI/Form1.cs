@@ -69,7 +69,7 @@ namespace MC_Java_Srv_GUI
         private void AppVer()
         {
             string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            materialLabel2.Text.Replace("VerStr", version);
+            materialLabel2.Text = materialLabel2.Text.Replace("VerStr", version);
         }
 
         // ====================
