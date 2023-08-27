@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33122.133
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MC-Java-Srv-GUI", "MC-Java-Srv-GUI\MC-Java-Srv-GUI.csproj", "{D3E7C5F4-DBEA-4339-8D37-DF37942E0023}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D3E7C5F4-DBEA-4339-8D37-DF37942E0023}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3E7C5F4-DBEA-4339-8D37-DF37942E0023}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3E7C5F4-DBEA-4339-8D37-DF37942E0023}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3E7C5F4-DBEA-4339-8D37-DF37942E0023}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1CD98056-25CF-4F2A-9056-466ABA360EB1}
+	EndGlobalSection
+EndGlobal
