@@ -7,7 +7,9 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Reflection.Emit;
+using System.Security.Policy;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -49,6 +51,8 @@ namespace MC_Java_Srv_GUI
             PopulateServers();
             // Populate Local Servers
             PopulateLocalServers();
+            // Set App Version
+            AppVer();
         }
 
         // ====================
@@ -59,6 +63,13 @@ namespace MC_Java_Srv_GUI
         private void materialButton3_Click(object sender, EventArgs e)
         {
             materialTabControl1.SelectedIndex = 1;
+        }
+
+        // VerStr
+        private void AppVer()
+        {
+            string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            materialLabel2.Text.Replace("VerStr", version);
         }
 
         // ====================
