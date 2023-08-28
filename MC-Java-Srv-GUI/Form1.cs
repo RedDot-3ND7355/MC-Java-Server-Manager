@@ -1,24 +1,16 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using MaterialSkin;
+using MaterialSkin.Controls;
+using MC_Java_Srv_GUI.Core;
+using MC_Java_Srv_GUI.Curse;
+using MC_Java_Srv_GUI.View;
+using System;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Reflection.Emit;
-using System.Security.Policy;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Windows.Media.Imaging;
-using MaterialSkin;
-using MaterialSkin.Controls;
-using MC_Java_Srv_GUI.Core;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace MC_Java_Srv_GUI
 {
@@ -46,7 +38,7 @@ namespace MC_Java_Srv_GUI
             // Prepare for downloads
             CreateFolders();
             // Ini & Read Config
-            ConfigHandler.ReadConfig();
+            ConfigHandler.ReadConfig(false);
             // Show detected servers
             PopulateServers();
             // Populate Local Servers
@@ -82,9 +74,9 @@ namespace MC_Java_Srv_GUI
 
         private void CreateFolders()
         {
-            if (!Directory.Exists(Application.StartupPath + "\\Servers"))
-                Directory.CreateDirectory(Application.StartupPath + "\\Servers");
-            ServersFolder = Application.StartupPath + "\\Servers\\";
+            if (!Directory.Exists(System.Windows.Forms.Application.StartupPath + "\\Servers"))
+                Directory.CreateDirectory(System.Windows.Forms.Application.StartupPath + "\\Servers");
+            ServersFolder = System.Windows.Forms.Application.StartupPath + "\\Servers\\";
         }
 
         private void PopulateDLVersions()
@@ -166,37 +158,52 @@ namespace MC_Java_Srv_GUI
                 (ConfigHandler.Server9 != null && ConfigHandler.Server9.Online) ||
                 (ConfigHandler.Server10 != null && ConfigHandler.Server10.Online))
                 return true;
-            else 
+            else
                 return false;
         }
 
-        public void startDownload(string url, string version, string naming)
+        private bool UseForgeDL = false;
+        public void startDownload(string url, string version, string naming, bool useforge = false)
         {
             // Global the values
             tmp_name = naming;
             tmp_path = ServersFolder + naming;
+            UseForgeDL = useforge;
             // Create needed folder for file drop
             Directory.CreateDirectory(ServersFolder + naming + "\\" + version);
             // Download file to folder...
-            Thread thread = new Thread(() => {
+            Thread thread = new Thread(() =>
+            {
                 CheckForIllegalCrossThreadCalls = false;
                 WebClient client = new WebClient();
                 client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(client_DownloadProgressChanged);
                 client.DownloadFileCompleted += new AsyncCompletedEventHandler(client_DownloadFileCompleted);
-                client.DownloadFileAsync(new Uri(url), ServersFolder + naming + "\\" + version + "\\server.jar");
+                if (!useforge)
+                    client.DownloadFileAsync(new Uri(url), ServersFolder + naming + "\\" + version + "\\server.jar");
+                else
+                    client.DownloadFileAsync(new Uri(url), ServersFolder + naming + "\\" + version + "\\installer.jar");
             });
             thread.Start();
         }
 
         void client_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            this.BeginInvoke((MethodInvoker)delegate {
+            this.BeginInvoke((MethodInvoker)delegate
+            {
                 CheckForIllegalCrossThreadCalls = false;
                 double bytesIn = double.Parse(e.BytesReceived.ToString());
                 double totalBytes = double.Parse(e.TotalBytesToReceive.ToString());
                 double percentage = bytesIn / totalBytes * 100;
-                materialButton8.Text = Math.Truncate(percentage).ToString();
-                materialProgressBar1.Value = int.Parse(Math.Truncate(percentage).ToString());
+                if (!UseForgeDL)
+                {
+                    materialButton8.Text = Math.Truncate(percentage).ToString();
+                    materialProgressBar1.Value = int.Parse(Math.Truncate(percentage).ToString());
+                }
+                else
+                {
+                    materialButton56.Text = Math.Truncate(percentage).ToString();
+                    materialProgressBar2.Value = int.Parse(Math.Truncate(percentage).ToString());
+                }
             });
         }
 
@@ -204,12 +211,23 @@ namespace MC_Java_Srv_GUI
         string tmp_path = "";
         void client_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            this.BeginInvoke((MethodInvoker)delegate {
+            this.BeginInvoke((MethodInvoker)delegate
+            {
                 CheckForIllegalCrossThreadCalls = false;
-                materialButton8.Text = "Download";
-                materialButton8.Enabled = true;
-                materialTextBox21.Text = "";
-                materialProgressBar1.Value = 0;
+                if (!UseForgeDL)
+                {
+                    materialButton8.Text = "Download";
+                    materialButton8.Enabled = true;
+                    materialTextBox21.Text = "";
+                    materialProgressBar1.Value = 0;
+                }
+                else
+                {
+                    materialButton56.Text = "Download Forge";
+                    materialButton56.Enabled = true;
+                    materialTextBox24.Text = "";
+                    materialProgressBar2.Value = 0;
+                }
                 // Add to config
                 ConfigHandler.WriteConfig(tmp_name, tmp_path);
                 // Reset Manager
@@ -618,7 +636,7 @@ namespace MC_Java_Srv_GUI
                             materialLabel32.Text = "Port: 25565";
                     }
                     break;
-                //
+                    //
             }
         }
 
@@ -777,7 +795,7 @@ namespace MC_Java_Srv_GUI
                         materialExpansionPanel10.Refresh();
                     }
                     break;
-                //
+                    //
             }
         }
 
@@ -894,6 +912,112 @@ namespace MC_Java_Srv_GUI
 
         // ====================
         // End Configs Handler
+        // ====================
+
+        // ====================
+        // CurseForge Manager
+        // ====================
+
+        // Ini Curse and populate minecraft versions
+        private void materialButton55_Click(object sender, EventArgs e) =>
+            Curse.ForgeAPI.InitCurse(materialTextBox23.Text);
+
+        // Select Minecraft version and populate Forge Versions
+        private void materialComboBox3_SelectedIndexChanged(object sender, EventArgs e) =>
+            Curse.ForgeAPI.SpawnForges(materialComboBox3.Text);
+
+        // Select Forge Version and Fetch Info
+        private void materialComboBox4_SelectedIndexChanged(object sender, EventArgs e) =>
+            Curse.ForgeAPI.FetchForge(materialComboBox4.Text);
+
+        // Redirect to Downloader
+        private void materialButton57_Click(object sender, EventArgs e) =>
+            materialTabControl1.SelectedIndex = 1;
+
+        // Download Selected Forge
+        private void materialButton56_Click(object sender, EventArgs e)
+        {
+            materialButton56.Enabled = false;
+            // Check Limit
+            int curr = 0;
+            if (materialExpansionPanel1.Visible)
+                curr++;
+            if (materialExpansionPanel2.Visible)
+                curr++;
+            if (materialExpansionPanel3.Visible)
+                curr++;
+            if (materialExpansionPanel4.Visible)
+                curr++;
+            if (materialExpansionPanel5.Visible)
+                curr++;
+            if (materialExpansionPanel6.Visible)
+                curr++;
+            if (materialExpansionPanel7.Visible)
+                curr++;
+            if (materialExpansionPanel8.Visible)
+                curr++;
+            if (materialExpansionPanel9.Visible)
+                curr++;
+            if (materialExpansionPanel10.Visible)
+                curr++;
+            if (curr == 10)
+            {
+                MaterialMessageBox.Show("Limit of Managed Servers Reached! :C", false);
+                materialButton56.Enabled = true;
+                return;
+            }
+            // Check if any server is online
+            if (CheckActiveServers())
+            {
+                MaterialMessageBox.Show("Please stop any running servers before proceeding! :)", false);
+                materialButton56.Enabled = true;
+                return;
+            }
+            // Translate url
+            string url = ForgeAPI.selectedForge.Data.DownloadUrl; // https://modloaders.forgecdn.net/647622546/maven/net/minecraftforge/forge/1.20.1-47.1.8/forge-1.20.1-47.1.8.jar
+            string ver = url.Substring(ForgeAPI.selectedForge.Data.DownloadUrl.IndexOf("/", 70)); //
+            string verfinal = ver.Substring(0, ver.LastIndexOf("/"));
+            string file = url.Substring(ForgeAPI.selectedForge.Data.DownloadUrl.IndexOf("/", 76)).Replace(".jar", "-installer.jar"); //
+            string converted = $"https://maven.minecraftforge.net/net/minecraftforge/{ForgeAPI.selectedForge.Data.Type.ToString().ToLower()}{verfinal}{file}";
+            // Start/Proceed
+            startDownload(converted, ForgeAPI.selectedForge.Data.MinecraftVersion + $" [{ForgeAPI.selectedForge.Data.Type}]", materialTextBox24.Text, true);
+        }
+
+        // Text box for naming forge server
+        private void materialTextBox24_TextChanged(object sender, EventArgs e)
+        {
+            if (materialTextBox24.Text.Length > 0 && !Directory.Exists(ServersFolder + materialTextBox24.Text))
+            {
+                pictureBox3.Image = imageList2.Images[1];
+                materialButton56.Enabled = true;
+            }
+            else
+            {
+                pictureBox3.Image = imageList2.Images[0];
+                materialButton56.Enabled = false;
+            }
+        }
+
+        // Show Mod Manager
+        private void materialButton58_Click(object sender, EventArgs e)
+        {
+            CurseModManager modManager = new CurseModManager();
+            this.Hide();
+            modManager.ShowDialog();
+            this.Show();
+        }
+
+        // Allow saving
+        private void materialTextBox23_TextChanged(object sender, EventArgs e)
+        {
+            if (materialTextBox23.Text.Length > 0)
+                materialButton55.Enabled = true;
+            else
+                materialButton55.Enabled = false;
+        }
+
+        // ====================
+        // End Curse Manager
         // ====================
     }
 }

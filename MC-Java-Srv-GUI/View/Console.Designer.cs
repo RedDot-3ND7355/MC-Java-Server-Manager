@@ -34,11 +34,16 @@
             // 
             // consoleBox
             // 
-            this.consoleBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.consoleBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.consoleBox.Location = new System.Drawing.Point(3, 64);
+            this.consoleBox.MaxLength = 999999999;
             this.consoleBox.Multiline = true;
             this.consoleBox.Name = "consoleBox";
-            this.consoleBox.Size = new System.Drawing.Size(794, 383);
+            this.consoleBox.ReadOnly = true;
+            this.consoleBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.consoleBox.Size = new System.Drawing.Size(794, 357);
             this.consoleBox.TabIndex = 0;
             this.consoleBox.TextChanged += new System.EventHandler(this.consoleBox_TextChanged);
             // 
@@ -58,6 +63,7 @@
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.consoleBox);
             this.Name = "Console";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Console";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Console_FormClosing);
             this.ResumeLayout(false);

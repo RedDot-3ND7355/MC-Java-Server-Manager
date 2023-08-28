@@ -2,14 +2,6 @@
 using MaterialSkin.Controls;
 using MC_Java_Srv_GUI.Core;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MC_Java_Srv_GUI.View
@@ -40,14 +32,15 @@ namespace MC_Java_Srv_GUI.View
 
         private void Console_FormClosing(object sender, FormClosingEventArgs e)
         {
-            e.Cancel= true;
+            e.Cancel = true;
             this.Hide();
         }
 
         // Send Command
         private void textBox1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter) {
+            if (e.KeyCode == Keys.Enter)
+            {
                 parentServer.SendCommand(textBox1.Text);
                 consoleBox.Text += $"{Environment.NewLine} {textBox1.Text}";
                 textBox1.Text = "";

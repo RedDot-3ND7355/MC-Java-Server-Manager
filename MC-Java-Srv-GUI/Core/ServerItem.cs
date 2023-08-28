@@ -2,13 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Xml.Schema;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace MC_Java_Srv_GUI.Core
 {
@@ -122,7 +116,8 @@ namespace MC_Java_Srv_GUI.Core
             if (MineStatsHandler.Working)
                 return;
             Int32 PORT = Int32.Parse(Port);
-            Task.Delay(50).ContinueWith(delegate {
+            Task.Delay(50).ContinueWith(delegate
+            {
                 Form1.CheckForIllegalCrossThreadCalls = false;
                 List<string> stats = new List<string>();
                 MineStatsHandler.Working = true;
@@ -141,14 +136,23 @@ namespace MC_Java_Srv_GUI.Core
         // Start Server Routine
         private void StartRoutine(bool UseGUI)
         {
+            ResetConsole();
             string Path2JAR = Path2Server + "\\" + Version + "\\" + "server.jar";
+            string _startInfo = $"/k java -jar \"{Path2JAR}\" {(UseGUI ? "" : "--nogui")}";
+            // Forge compat
+            if (File.Exists(Path2Server + "\\" + Version + "\\" + "run.bat"))
+            {
+                Path2JAR = Path2Server + "\\" + Version + "\\" + "run.bat";
+                _startInfo = $"/k \"{Path2JAR}\"";
+            }
+            // Continue
             Server = new Process()
             {
-                StartInfo = new ProcessStartInfo("cmd.exe", $"/k java -jar \"{Path2JAR}\" {(UseGUI ? "" : "--nogui")}")
+                StartInfo = new ProcessStartInfo("cmd.exe", _startInfo)
                 {
                     WorkingDirectory = Path2Server + "\\" + Version,
                     UseShellExecute = false,
-                    RedirectStandardInput= true,
+                    RedirectStandardInput = true,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     CreateNoWindow = true,
@@ -185,13 +189,19 @@ namespace MC_Java_Srv_GUI.Core
         private void AcceptEula()
         {
             string Path2JAR = Path2Server + "\\" + Version + "\\" + "server.jar";
+            string _startinfo = $"/k java -jar \"{Path2JAR}\" --nogui";
+            if (Path2JAR.Contains("Forge") && File.Exists(Path2Server + "\\" + Version + "\\" + "installer.jar"))
+            {
+                Path2JAR = Path2JAR.Replace("server.jar", "installer.jar");
+                _startinfo = $"/k java -jar \"{Path2JAR}\" --installServer";
+            }
             Server = new Process()
             {
-                StartInfo = new ProcessStartInfo("cmd.exe", $"/k java -jar \"{Path2JAR}\" --nogui") 
+                StartInfo = new ProcessStartInfo("cmd.exe", _startinfo)
                 {
                     WorkingDirectory = Path2Server + "\\" + Version,
                     UseShellExecute = false,
-                    RedirectStandardInput= true,
+                    RedirectStandardInput = true,
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     CreateNoWindow = true
@@ -209,13 +219,41 @@ namespace MC_Java_Srv_GUI.Core
                 Server.StandardInput.WriteLine("exit");
             }
             while (!Server.HasExited) { }
+            if (File.Exists(Path2Server + "\\" + Version + "\\" + "run.bat"))
+            {
+                Server = new Process()
+                {
+                    StartInfo = new ProcessStartInfo("cmd.exe", $"/k \"{Path2Server + "\\" + Version + "\\" + "run.bat"}\"")
+                    {
+                        WorkingDirectory = Path2Server + "\\" + Version,
+                        UseShellExecute = false,
+                        RedirectStandardInput = true,
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true,
+                        CreateNoWindow = true
+                    },
+                    EnableRaisingEvents = true
+                };
+                // Set Server Events
+                Server.ErrorDataReceived += Server_ErrorDataReceived;
+                Server.OutputDataReceived += Server_OutputDataReceived;
+                // Set Server Online & Start it
+                if (Server.Start())
+                {
+                    Server.BeginErrorReadLine();
+                    Server.BeginOutputReadLine();
+                    Server.StandardInput.WriteLine("");
+                    Server.StandardInput.WriteLine("exit");
+                    Server.WaitForExit(1000);
+                }
+            }
             string eula = File.ReadAllText(Path2Server + "\\" + Version + "\\" + "eula.txt");
             eula = eula.Replace("eula=false", "eula=true");
             File.WriteAllText(Path2Server + "\\" + Version + "\\" + "eula.txt", eula);
             // Set default PORT
             Port = "25565";
         }
-        
+
         //
         // End Server Handling
         //

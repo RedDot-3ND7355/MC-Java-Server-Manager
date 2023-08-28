@@ -1,10 +1,6 @@
-﻿using Newtonsoft.Json.Serialization;
-using System;
+﻿using MC_Java_Srv_GUI.Curse;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 
@@ -20,7 +16,7 @@ namespace MC_Java_Srv_GUI.Core
 
         // Globals
         private static string defaultsettings = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<servers>\r\n</servers>";
-        public static Dictionary<string,string> serverfolders = new Dictionary<string, string>();
+        public static Dictionary<string, string> serverfolders = new Dictionary<string, string>();
         private static string Path2Config = Application.StartupPath + "\\Config.xml";
         private static XmlDocument ConfigXML = new XmlDocument();
         // End Globals
@@ -76,7 +72,7 @@ namespace MC_Java_Srv_GUI.Core
         }
 
         // Read Config.ini
-        public static void ReadConfig()
+        public static void ReadConfig(bool bypasscurse = true)
         {
             // Create if missing
             if (!File.Exists(Path2Config))
@@ -86,10 +82,23 @@ namespace MC_Java_Srv_GUI.Core
             var servers = ConfigXML.DocumentElement.SelectNodes("server");
             foreach (XmlNode node in servers)
                 serverfolders.Add(node.Attributes["name"].Value, node.InnerText);
+            // Read apikey
+            if (!bypasscurse)
+            {
+                var apikey = ConfigXML.DocumentElement.SelectSingleNode("setting");
+                if (apikey != null)
+                {
+                    Form1.CurrentForm.materialTextBox23.Text = apikey.InnerText;
+                    Form1.CurrentForm.materialTextBox23.Enabled = false;
+                    Form1.CurrentForm.materialButton55.Enabled = false;
+                    // Init ForgeAPI
+                    ForgeAPI.InitCurse(apikey.InnerText, true);
+                }
+            }
         }
 
         // Write Config.ini
-        public static void WriteConfig(string servername, string serverpath) 
+        public static void WriteConfig(string servername, string serverpath)
         {
             // Add server to config
             XmlElement newChild = ConfigXML.CreateElement("server");
@@ -103,6 +112,18 @@ namespace MC_Java_Srv_GUI.Core
             ReadConfig();
         }
 
+        // Save Api Key
+        public static void SaveApiKey(string apiKey)
+        {
+            // Add server to config
+            XmlElement newChild = ConfigXML.CreateElement("setting");
+            newChild.InnerText = apiKey;
+            newChild.SetAttribute("setting", "apikey");
+            ConfigXML.DocumentElement.AppendChild(newChild);
+            ConfigXML.Save(Path2Config);
+        }
+
+        // Create config
         private static void CreateConfig() =>
             File.WriteAllText(Path2Config, defaultsettings);
     }
