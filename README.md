@@ -6,6 +6,9 @@ NOTE:
 -Updating mods isn't supported YET.
 -Starting servers for the first time hangs the UI and takes time. Please be patient :)
 
+Thanks to the following project for making the new features possible!
+https://github.com/CurseForgeCommunity/.NET-APIClient
+
 Requirements: Open your ports manually [Port forward/Server configs] on your router.
 Depending on FireWall you're using, you might need to open them there as well.
 
