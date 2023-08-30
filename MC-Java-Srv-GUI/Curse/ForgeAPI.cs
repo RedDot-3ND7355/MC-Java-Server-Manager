@@ -1,5 +1,6 @@
 ﻿using CurseForge.APIClient;
 using CurseForge.APIClient.Models;
+using CurseForge.APIClient.Models.Fingerprints;
 using CurseForge.APIClient.Models.Minecraft;
 using MaterialSkin;
 using MaterialSkin.Controls;
@@ -160,9 +161,34 @@ namespace MC_Java_Srv_GUI.Curse
             }
             // Fix File name
             else if (!mod.Data.LatestFiles[0].DisplayName.EndsWith(".jar"))
-                File.Move(SelectedPath + "\\" + mod.Data.LatestFiles[0].DisplayName, SelectedPath + "\\" + mod.Data.LatestFiles[0].DisplayName + ".jar");
+                if (!File.Exists(SelectedPath + "\\" + mod.Data.LatestFiles[0].DisplayName + ".jar"))
+                    File.Move(SelectedPath + "\\" + mod.Data.LatestFiles[0].DisplayName, SelectedPath + "\\" + mod.Data.LatestFiles[0].DisplayName + ".jar");
+                else
+                    MaterialMessageBox.Show("Mod already installed!", false);
             CurseModManager.CurrentForm.RefreshLocalMods();
             CurseModManager.CurrentForm.materialButton3.Enabled = true;
+        }
+
+        // Update Mod
+        public static async void UpdateSelectedMod(string modName)
+        {
+            long fingerprint = cfApiClient.GetFingerprintFromFile(SelectedPath + "\\" + modName);
+            var modFile = await cfApiClient.GetFingerprintMatchesAsync(new GetFingerprintMatchesRequestBody
+            {
+                Fingerprints = new List<long>() { fingerprint }
+            });
+            if (modFile.Data.ExactMatches.Count > 0)
+            {
+                var mod = await cfApiClient.GetModAsync(modFile.Data.ExactMatches[0].Id);
+                if (mod.Data.LatestFiles[0].FileFingerprint != fingerprint)
+                {
+                    DeleteSelectedMod(modName);
+                    CurseModManager.CurrentForm.removeMod();
+                    DownloadSelectedMod(mod.Data.LatestFiles[0].Id);
+                }
+                else
+                    MaterialMessageBox.Show("Selected Mod is up-to-date!");
+            }
         }
 
         // ===============

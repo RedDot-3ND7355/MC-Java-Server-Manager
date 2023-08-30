@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialSkin.Controls;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -15,9 +16,14 @@ namespace MC_Java_Srv_GUI.Core
         // Open Config
         public void OpenConfig()
         {
-            Form1.CurrentForm.materialTextBox22.Text = Path2Server + "\\" + Version + "\\" + "server.properties";
-            Form1.CurrentForm.materialMultiLineTextBox21.Text = File.ReadAllText(Path2Server + "\\" + Version + "\\" + "server.properties");
-            Form1.CurrentForm.materialButton7.Enabled = true;
+            if (File.Exists(Path2Server + "\\" + Version + "\\" + "server.properties"))
+            {
+                Form1.CurrentForm.materialTextBox22.Text = Path2Server + "\\" + Version + "\\" + "server.properties";
+                Form1.CurrentForm.materialMultiLineTextBox21.Text = File.ReadAllText(Path2Server + "\\" + Version + "\\" + "server.properties");
+                Form1.CurrentForm.materialButton7.Enabled = true;
+            }
+            else
+                MaterialMessageBox.Show("server.properties is non-existant!", false);
         }
 
         //
@@ -247,6 +253,7 @@ namespace MC_Java_Srv_GUI.Core
                     Server.WaitForExit(1000);
                 }
             }
+            while (!Server.HasExited) { }
             string eula = File.ReadAllText(Path2Server + "\\" + Version + "\\" + "eula.txt");
             eula = eula.Replace("eula=false", "eula=true");
             File.WriteAllText(Path2Server + "\\" + Version + "\\" + "eula.txt", eula);

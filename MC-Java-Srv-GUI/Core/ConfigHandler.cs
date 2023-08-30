@@ -53,6 +53,10 @@ namespace MC_Java_Srv_GUI.Core
             string selected = Form1.CurrentForm.materialComboBox1.SelectedItem.ToString();
             string path2del = serverfolders[selected];
             serverfolders.Remove(selected);
+            // Garbage collect first
+            System.GC.Collect();
+            System.GC.WaitForPendingFinalizers();
+            // Continue...
             Directory.Delete(path2del, true);
             SaveConfig(selected);
             Form1.CurrentForm.ResetServers();

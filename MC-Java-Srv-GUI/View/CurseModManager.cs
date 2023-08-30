@@ -134,5 +134,15 @@ namespace MC_Java_Srv_GUI.View
                 foreach (string file in files)
                     materialListBox1.Items.Add(new MaterialListBoxItem(Path.GetFileName(file)));
         }
+
+        // Update Selected Mod
+        private void materialButton1_Click(object sender, EventArgs e)
+        {
+            ForgeAPI.UpdateSelectedMod(materialListBox1.SelectedItem.Text);
+        }
+
+        // Remove selected Mod in local mods
+        public void removeMod() =>
+            materialListBox1.RemoveItem(materialListBox1.SelectedItem);
     }
 }

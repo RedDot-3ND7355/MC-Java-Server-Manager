@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MC_Java_Srv_GUI
@@ -484,160 +485,164 @@ namespace MC_Java_Srv_GUI
         // Start Server Button
         private void materialButton2_Click(object sender, EventArgs e)
         {
-            var obj = sender as MaterialButton;
-            switch (obj.Name)
+            Task.Delay(0).ContinueWith(delegate
             {
-                // Server 1
-                case "materialButton2":
-                    ConfigHandler.Server1.StartServer();
-                    if (ConfigHandler.Server1.Online)
-                    {
-                        materialButton4.Enabled = true;
-                        materialButton6.Enabled = true;
-                        materialButton2.Enabled = false;
-                        materialButton1.Enabled = true;
-                        materialExpansionPanel1.Description = "Online";
-                        if (materialLabel5.Text.Contains("EULA"))
-                            materialLabel5.Text = "Port: 25565";
-                    }
-                    break;
-                //
-                // Server 2
-                case "materialButton9":
-                    ConfigHandler.Server2.StartServer();
-                    if (ConfigHandler.Server2.Online)
-                    {
-                        materialButton11.Enabled = true;
-                        materialButton12.Enabled = true;
-                        materialButton9.Enabled = false;
-                        materialButton10.Enabled = true;
-                        materialExpansionPanel2.Description = "Online";
-                        if (materialLabel8.Text.Contains("EULA"))
-                            materialLabel8.Text = "Port: 25565";
-                    }
-                    break;
-                //
-                // Server 3
-                case "materialButton14":
-                    ConfigHandler.Server3.StartServer();
-                    if (ConfigHandler.Server3.Online)
-                    {
-                        materialButton16.Enabled = true;
-                        materialButton17.Enabled = true;
-                        materialButton14.Enabled = false;
-                        materialButton15.Enabled = true;
-                        materialExpansionPanel3.Description = "Online";
-                        if (materialLabel11.Text.Contains("EULA"))
-                            materialLabel11.Text = "Port: 25565";
-                    }
-                    break;
-                //
-                // Server 4
-                case "materialButton19":
-                    ConfigHandler.Server4.StartServer();
-                    if (ConfigHandler.Server4.Online)
-                    {
-                        materialButton21.Enabled = true;
-                        materialButton22.Enabled = true;
-                        materialButton19.Enabled = false;
-                        materialButton20.Enabled = true;
-                        materialExpansionPanel4.Description = "Online";
-                        if (materialLabel14.Text.Contains("EULA"))
-                            materialLabel14.Text = "Port: 25565";
-                    }
-                    break;
-                //
-                // Server 5
-                case "materialButton24":
-                    ConfigHandler.Server5.StartServer();
-                    if (ConfigHandler.Server5.Online)
-                    {
-                        materialButton26.Enabled = true;
-                        materialButton27.Enabled = true;
-                        materialButton24.Enabled = false;
-                        materialButton25.Enabled = true;
-                        materialExpansionPanel5.Description = "Online";
-                        if (materialLabel17.Text.Contains("EULA"))
-                            materialLabel17.Text = "Port: 25565";
-                    }
-                    break;
-                //
-                // Server 6
-                case "materialButton29":
-                    ConfigHandler.Server6.StartServer();
-                    if (ConfigHandler.Server6.Online)
-                    {
-                        materialButton31.Enabled = true;
-                        materialButton32.Enabled = true;
-                        materialButton29.Enabled = false;
-                        materialButton30.Enabled = true;
-                        materialExpansionPanel6.Description = "Online";
-                        if (materialLabel20.Text.Contains("EULA"))
-                            materialLabel20.Text = "Port: 25565";
-                    }
-                    break;
-                //
-                // Server 7
-                case "materialButton34":
-                    ConfigHandler.Server7.StartServer();
-                    if (ConfigHandler.Server7.Online)
-                    {
-                        materialButton36.Enabled = true;
-                        materialButton37.Enabled = true;
-                        materialButton34.Enabled = false;
-                        materialButton35.Enabled = true;
-                        materialExpansionPanel7.Description = "Online";
-                        if (materialLabel23.Text.Contains("EULA"))
-                            materialLabel23.Text = "Port: 25565";
-                    }
-                    break;
-                //
-                // Server 8
-                case "materialButton39":
-                    ConfigHandler.Server8.StartServer();
-                    if (ConfigHandler.Server8.Online)
-                    {
-                        materialButton41.Enabled = true;
-                        materialButton42.Enabled = true;
-                        materialButton39.Enabled = false;
-                        materialButton40.Enabled = true;
-                        materialExpansionPanel8.Description = "Online";
-                        if (materialLabel26.Text.Contains("EULA"))
-                            materialLabel26.Text = "Port: 25565";
-                    }
-                    break;
-                //
-                // Server 9
-                case "materialButton44":
-                    ConfigHandler.Server9.StartServer();
-                    if (ConfigHandler.Server9.Online)
-                    {
-                        materialButton46.Enabled = true;
-                        materialButton47.Enabled = true;
-                        materialButton44.Enabled = false;
-                        materialButton45.Enabled = true;
-                        materialExpansionPanel9.Description = "Online";
-                        if (materialLabel29.Text.Contains("EULA"))
-                            materialLabel29.Text = "Port: 25565";
-                    }
-                    break;
-                //
-                // Server 10
-                case "materialButton49":
-                    ConfigHandler.Server10.StartServer();
-                    if (ConfigHandler.Server10.Online)
-                    {
-                        materialButton51.Enabled = true;
-                        materialButton52.Enabled = true;
-                        materialButton49.Enabled = false;
-                        materialButton50.Enabled = true;
-                        materialExpansionPanel10.Description = "Online";
-                        if (materialLabel32.Text.Contains("EULA"))
-                            materialLabel32.Text = "Port: 25565";
-                    }
-                    break;
+                CheckForIllegalCrossThreadCalls = false;
+                var obj = sender as MaterialButton;
+                switch (obj.Name)
+                {
+                    // Server 1
+                    case "materialButton2":
+                        ConfigHandler.Server1.StartServer();
+                        if (ConfigHandler.Server1.Online)
+                        {
+                            materialButton4.Enabled = true;
+                            materialButton6.Enabled = true;
+                            materialButton2.Enabled = false;
+                            materialButton1.Enabled = true;
+                            materialExpansionPanel1.Description = "Online";
+                            if (materialLabel5.Text.Contains("EULA"))
+                                materialLabel5.Text = "Port: 25565";
+                        }
+                        break;
                     //
-            }
+                    // Server 2
+                    case "materialButton9":
+                        ConfigHandler.Server2.StartServer();
+                        if (ConfigHandler.Server2.Online)
+                        {
+                            materialButton11.Enabled = true;
+                            materialButton12.Enabled = true;
+                            materialButton9.Enabled = false;
+                            materialButton10.Enabled = true;
+                            materialExpansionPanel2.Description = "Online";
+                            if (materialLabel8.Text.Contains("EULA"))
+                                materialLabel8.Text = "Port: 25565";
+                        }
+                        break;
+                    //
+                    // Server 3
+                    case "materialButton14":
+                        ConfigHandler.Server3.StartServer();
+                        if (ConfigHandler.Server3.Online)
+                        {
+                            materialButton16.Enabled = true;
+                            materialButton17.Enabled = true;
+                            materialButton14.Enabled = false;
+                            materialButton15.Enabled = true;
+                            materialExpansionPanel3.Description = "Online";
+                            if (materialLabel11.Text.Contains("EULA"))
+                                materialLabel11.Text = "Port: 25565";
+                        }
+                        break;
+                    //
+                    // Server 4
+                    case "materialButton19":
+                        ConfigHandler.Server4.StartServer();
+                        if (ConfigHandler.Server4.Online)
+                        {
+                            materialButton21.Enabled = true;
+                            materialButton22.Enabled = true;
+                            materialButton19.Enabled = false;
+                            materialButton20.Enabled = true;
+                            materialExpansionPanel4.Description = "Online";
+                            if (materialLabel14.Text.Contains("EULA"))
+                                materialLabel14.Text = "Port: 25565";
+                        }
+                        break;
+                    //
+                    // Server 5
+                    case "materialButton24":
+                        ConfigHandler.Server5.StartServer();
+                        if (ConfigHandler.Server5.Online)
+                        {
+                            materialButton26.Enabled = true;
+                            materialButton27.Enabled = true;
+                            materialButton24.Enabled = false;
+                            materialButton25.Enabled = true;
+                            materialExpansionPanel5.Description = "Online";
+                            if (materialLabel17.Text.Contains("EULA"))
+                                materialLabel17.Text = "Port: 25565";
+                        }
+                        break;
+                    //
+                    // Server 6
+                    case "materialButton29":
+                        ConfigHandler.Server6.StartServer();
+                        if (ConfigHandler.Server6.Online)
+                        {
+                            materialButton31.Enabled = true;
+                            materialButton32.Enabled = true;
+                            materialButton29.Enabled = false;
+                            materialButton30.Enabled = true;
+                            materialExpansionPanel6.Description = "Online";
+                            if (materialLabel20.Text.Contains("EULA"))
+                                materialLabel20.Text = "Port: 25565";
+                        }
+                        break;
+                    //
+                    // Server 7
+                    case "materialButton34":
+                        ConfigHandler.Server7.StartServer();
+                        if (ConfigHandler.Server7.Online)
+                        {
+                            materialButton36.Enabled = true;
+                            materialButton37.Enabled = true;
+                            materialButton34.Enabled = false;
+                            materialButton35.Enabled = true;
+                            materialExpansionPanel7.Description = "Online";
+                            if (materialLabel23.Text.Contains("EULA"))
+                                materialLabel23.Text = "Port: 25565";
+                        }
+                        break;
+                    //
+                    // Server 8
+                    case "materialButton39":
+                        ConfigHandler.Server8.StartServer();
+                        if (ConfigHandler.Server8.Online)
+                        {
+                            materialButton41.Enabled = true;
+                            materialButton42.Enabled = true;
+                            materialButton39.Enabled = false;
+                            materialButton40.Enabled = true;
+                            materialExpansionPanel8.Description = "Online";
+                            if (materialLabel26.Text.Contains("EULA"))
+                                materialLabel26.Text = "Port: 25565";
+                        }
+                        break;
+                    //
+                    // Server 9
+                    case "materialButton44":
+                        ConfigHandler.Server9.StartServer();
+                        if (ConfigHandler.Server9.Online)
+                        {
+                            materialButton46.Enabled = true;
+                            materialButton47.Enabled = true;
+                            materialButton44.Enabled = false;
+                            materialButton45.Enabled = true;
+                            materialExpansionPanel9.Description = "Online";
+                            if (materialLabel29.Text.Contains("EULA"))
+                                materialLabel29.Text = "Port: 25565";
+                        }
+                        break;
+                    //
+                    // Server 10
+                    case "materialButton49":
+                        ConfigHandler.Server10.StartServer();
+                        if (ConfigHandler.Server10.Online)
+                        {
+                            materialButton51.Enabled = true;
+                            materialButton52.Enabled = true;
+                            materialButton49.Enabled = false;
+                            materialButton50.Enabled = true;
+                            materialExpansionPanel10.Description = "Online";
+                            if (materialLabel32.Text.Contains("EULA"))
+                                materialLabel32.Text = "Port: 25565";
+                        }
+                        break;
+                        //
+                }
+            });
         }
 
         // Stop Server Button
