@@ -119,7 +119,7 @@ namespace MC_Java_Srv_GUI.View
         {
             materialButton3.Enabled = false;
             if (materialComboBox1.SelectedItem != null)
-                ForgeAPI.DownloadSelectedMod(mod_ids[materialListBox2.SelectedItem.Text]);
+                ForgeAPI.DownloadSelectedMod(mod_ids[materialListBox2.SelectedItem.Text], materialComboBox2.SelectedItem.ToString());
             else
                 MaterialMessageBox.Show("Please Select Server to install to!", false);
         }
@@ -136,8 +136,13 @@ namespace MC_Java_Srv_GUI.View
         }
 
         // Update Selected Mod
-        private void materialButton1_Click(object sender, EventArgs e) =>
-            ForgeAPI.UpdateSelectedMod(materialListBox1.SelectedItem.Text);
+        private void materialButton1_Click(object sender, EventArgs e)
+        {
+            if (materialComboBox2.SelectedItem != null)
+                ForgeAPI.UpdateSelectedMod(materialListBox1.SelectedItem.Text, materialComboBox2.SelectedItem.ToString());
+            else
+                MaterialMessageBox.Show("Please select proper server version!", false);
+        }
 
         // Remove selected Mod in local mods
         public void removeMod() =>

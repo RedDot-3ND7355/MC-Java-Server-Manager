@@ -355,7 +355,7 @@
             this.materialComboBox1.MouseState = MaterialSkin.MouseState.OUT;
             this.materialComboBox1.Name = "materialComboBox1";
             this.materialComboBox1.Size = new System.Drawing.Size(322, 49);
-            this.materialComboBox1.StartIndex = 0;
+            this.materialComboBox1.StartIndex = -1;
             this.materialComboBox1.TabIndex = 7;
             // 
             // materialDivider1
@@ -475,7 +475,7 @@
             this.materialComboBox2.MouseState = MaterialSkin.MouseState.OUT;
             this.materialComboBox2.Name = "materialComboBox2";
             this.materialComboBox2.Size = new System.Drawing.Size(439, 49);
-            this.materialComboBox2.StartIndex = 0;
+            this.materialComboBox2.StartIndex = -1;
             this.materialComboBox2.TabIndex = 0;
             // 
             // tabPage1
@@ -2633,7 +2633,7 @@
             this.materialComboBox4.MouseState = MaterialSkin.MouseState.OUT;
             this.materialComboBox4.Name = "materialComboBox4";
             this.materialComboBox4.Size = new System.Drawing.Size(341, 49);
-            this.materialComboBox4.StartIndex = 0;
+            this.materialComboBox4.StartIndex = -1;
             this.materialComboBox4.TabIndex = 4;
             this.materialComboBox4.SelectedIndexChanged += new System.EventHandler(this.materialComboBox4_SelectedIndexChanged);
             // 
@@ -2658,7 +2658,7 @@
             this.materialComboBox3.MouseState = MaterialSkin.MouseState.OUT;
             this.materialComboBox3.Name = "materialComboBox3";
             this.materialComboBox3.Size = new System.Drawing.Size(341, 49);
-            this.materialComboBox3.StartIndex = 0;
+            this.materialComboBox3.StartIndex = -1;
             this.materialComboBox3.TabIndex = 3;
             this.materialComboBox3.SelectedIndexChanged += new System.EventHandler(this.materialComboBox3_SelectedIndexChanged);
             // 

@@ -146,31 +146,44 @@ namespace MC_Java_Srv_GUI.Curse
         }
 
         // Download Mod
-        public static async void DownloadSelectedMod(int modID)
+        public static async void DownloadSelectedMod(int modID, string version = "", CurseForge.APIClient.Models.Mods.ModLoaderType type = CurseForge.APIClient.Models.Mods.ModLoaderType.Forge)
         {
             var mod = await cfApiClient.GetModAsync(modID);
             WebClient client = new WebClient();
-            client.DownloadFile(mod.Data.LatestFiles[0].DownloadUrl, SelectedPath + "\\" + mod.Data.LatestFiles[0].DisplayName);
-            // Extract Mod Pack
-            if (mod.Data.LatestFiles[0].DownloadUrl.EndsWith(".zip"))
+            GenericResponse<CurseForge.APIClient.Models.Files.File> foudmod = null;
+            foreach (var enu_mod in mod.Data.LatestFilesIndexes)
+                if (enu_mod.GameVersion == version && enu_mod.ModLoader == type)
+                {
+                    foudmod = await cfApiClient.GetModFileAsync(modID, enu_mod.FileId);
+                    break;
+                }
+            if (foudmod != null)
             {
-                var zipFile = ZipFile.Open(SelectedPath + "\\" + mod.Data.LatestFiles[0].DisplayName, ZipArchiveMode.Read);
-                zipFile.ExtractToDirectory(SelectedPath, true);
-                zipFile.Dispose();
-                File.Delete(SelectedPath + "\\" + mod.Data.LatestFiles[0].DisplayName);
+                client.DownloadFile(foudmod.Data.DownloadUrl, SelectedPath + "\\" + foudmod.Data.DisplayName);
+                // Extract Mod Pack
+                if (foudmod.Data.DownloadUrl.EndsWith(".zip"))
+                {
+                    var zipFile = ZipFile.Open(SelectedPath + "\\" + foudmod.Data.DisplayName, ZipArchiveMode.Read);
+                    zipFile.ExtractToDirectory(SelectedPath, true);
+                    zipFile.Dispose();
+                    File.Delete(SelectedPath + "\\" + foudmod.Data.DisplayName);
+                }
+                // Fix File name
+                else if (!foudmod.Data.DisplayName.EndsWith(".jar"))
+                    if (!File.Exists(SelectedPath + "\\" + foudmod.Data.DisplayName + ".jar"))
+                        File.Move(SelectedPath + "\\" + foudmod.Data.DisplayName, SelectedPath + "\\" + foudmod.Data.DisplayName + ".jar");
+                    else
+                        MaterialMessageBox.Show("Mod already installed!", false);
+                CurseModManager.CurrentForm.materialListBox1.SelectedIndex = -1;
+                CurseModManager.CurrentForm.RefreshLocalMods();
+                CurseModManager.CurrentForm.materialButton3.Enabled = true;
             }
-            // Fix File name
-            else if (!mod.Data.LatestFiles[0].DisplayName.EndsWith(".jar"))
-                if (!File.Exists(SelectedPath + "\\" + mod.Data.LatestFiles[0].DisplayName + ".jar"))
-                    File.Move(SelectedPath + "\\" + mod.Data.LatestFiles[0].DisplayName, SelectedPath + "\\" + mod.Data.LatestFiles[0].DisplayName + ".jar");
-                else
-                    MaterialMessageBox.Show("Mod already installed!", false);
-            CurseModManager.CurrentForm.RefreshLocalMods();
-            CurseModManager.CurrentForm.materialButton3.Enabled = true;
+            else
+                MaterialMessageBox.Show($"Nothing found for Forge, mc version: {version} of this mod!", false);
         }
 
         // Update Mod
-        public static async void UpdateSelectedMod(string modName)
+        public static async void UpdateSelectedMod(string modName, string version)
         {
             long fingerprint = cfApiClient.GetFingerprintFromFile(SelectedPath + "\\" + modName);
             var modFile = await cfApiClient.GetFingerprintMatchesAsync(new GetFingerprintMatchesRequestBody
@@ -180,14 +193,19 @@ namespace MC_Java_Srv_GUI.Curse
             if (modFile.Data.ExactMatches.Count > 0)
             {
                 var mod = await cfApiClient.GetModAsync(modFile.Data.ExactMatches[0].Id);
-                if (mod.Data.LatestFiles[0].FileFingerprint != fingerprint)
-                {
-                    DeleteSelectedMod(modName);
-                    CurseModManager.CurrentForm.removeMod();
-                    DownloadSelectedMod(mod.Data.LatestFiles[0].Id);
-                }
-                else
-                    MaterialMessageBox.Show("Selected Mod is up-to-date!");
+                bool found = false;
+                foreach (var _mod in mod.Data.LatestFiles)
+                    if (_mod.GameVersions.IndexOf(version) != -1 && _mod.GameVersions.IndexOf("Forge") != -1 && _mod.FileFingerprint != fingerprint)
+                    {
+                        DeleteSelectedMod(modName);
+                        DownloadSelectedMod(_mod.ModId, version);
+                        found = true;
+                        break;
+                    }
+                    else if (_mod.GameVersions.IndexOf(version) != -1 && _mod.GameVersions.IndexOf("Forge") != -1 && _mod.FileFingerprint == fingerprint)
+                        MaterialMessageBox.Show("Selected Mod is up-to-date!");
+                if (!found)
+                    MaterialMessageBox.Show("No update found for the selected version!");
             }
         }
 
