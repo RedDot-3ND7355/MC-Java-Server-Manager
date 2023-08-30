@@ -489,6 +489,7 @@ namespace MC_Java_Srv_GUI
             {
                 CheckForIllegalCrossThreadCalls = false;
                 var obj = sender as MaterialButton;
+                obj.Enabled = false;
                 switch (obj.Name)
                 {
                     // Server 1
@@ -504,6 +505,8 @@ namespace MC_Java_Srv_GUI
                             if (materialLabel5.Text.Contains("EULA"))
                                 materialLabel5.Text = "Port: 25565";
                         }
+                        else
+                            obj.Enabled = true;
                         break;
                     //
                     // Server 2
@@ -519,6 +522,8 @@ namespace MC_Java_Srv_GUI
                             if (materialLabel8.Text.Contains("EULA"))
                                 materialLabel8.Text = "Port: 25565";
                         }
+                        else
+                            obj.Enabled = true;
                         break;
                     //
                     // Server 3
@@ -534,6 +539,8 @@ namespace MC_Java_Srv_GUI
                             if (materialLabel11.Text.Contains("EULA"))
                                 materialLabel11.Text = "Port: 25565";
                         }
+                        else
+                            obj.Enabled = true;
                         break;
                     //
                     // Server 4
@@ -549,6 +556,8 @@ namespace MC_Java_Srv_GUI
                             if (materialLabel14.Text.Contains("EULA"))
                                 materialLabel14.Text = "Port: 25565";
                         }
+                        else
+                            obj.Enabled = true;
                         break;
                     //
                     // Server 5
@@ -564,6 +573,8 @@ namespace MC_Java_Srv_GUI
                             if (materialLabel17.Text.Contains("EULA"))
                                 materialLabel17.Text = "Port: 25565";
                         }
+                        else
+                            obj.Enabled = true;
                         break;
                     //
                     // Server 6
@@ -579,6 +590,8 @@ namespace MC_Java_Srv_GUI
                             if (materialLabel20.Text.Contains("EULA"))
                                 materialLabel20.Text = "Port: 25565";
                         }
+                        else
+                            obj.Enabled = true;
                         break;
                     //
                     // Server 7
@@ -594,6 +607,8 @@ namespace MC_Java_Srv_GUI
                             if (materialLabel23.Text.Contains("EULA"))
                                 materialLabel23.Text = "Port: 25565";
                         }
+                        else
+                            obj.Enabled = true;
                         break;
                     //
                     // Server 8
@@ -609,6 +624,8 @@ namespace MC_Java_Srv_GUI
                             if (materialLabel26.Text.Contains("EULA"))
                                 materialLabel26.Text = "Port: 25565";
                         }
+                        else
+                            obj.Enabled = true;
                         break;
                     //
                     // Server 9
@@ -624,6 +641,8 @@ namespace MC_Java_Srv_GUI
                             if (materialLabel29.Text.Contains("EULA"))
                                 materialLabel29.Text = "Port: 25565";
                         }
+                        else
+                            obj.Enabled = true;
                         break;
                     //
                     // Server 10
@@ -639,6 +658,8 @@ namespace MC_Java_Srv_GUI
                             if (materialLabel32.Text.Contains("EULA"))
                                 materialLabel32.Text = "Port: 25565";
                         }
+                        else
+                            obj.Enabled = true;
                         break;
                         //
                 }
@@ -648,160 +669,185 @@ namespace MC_Java_Srv_GUI
         // Stop Server Button
         private void materialButton1_Click(object sender, EventArgs e)
         {
-            var obj = sender as MaterialButton;
-            switch (obj.Name)
+            Task.Delay(0).ContinueWith(delegate
             {
-                // Server 1
-                case "materialButton1":
-                    ConfigHandler.Server1.StopServer();
-                    if (!ConfigHandler.Server1.Online)
-                    {
-                        ConfigHandler.Server1.ResetConsole();
-                        materialButton4.Enabled = false;
-                        materialButton6.Enabled = false;
-                        materialButton2.Enabled = true;
-                        materialButton1.Enabled = false;
-                        materialExpansionPanel1.Description = "Offline";
-                        materialExpansionPanel1.Refresh();
-                    }
-                    break;
-                //
-                // Server 2
-                case "materialButton10":
-                    ConfigHandler.Server2.StopServer();
-                    if (!ConfigHandler.Server2.Online)
-                    {
-                        ConfigHandler.Server2.ResetConsole();
-                        materialButton11.Enabled = false;
-                        materialButton12.Enabled = false;
-                        materialButton9.Enabled = true;
-                        materialButton10.Enabled = false;
-                        materialExpansionPanel2.Description = "Offline";
-                        materialExpansionPanel2.Refresh();
-                    }
-                    break;
-                //
-                // Server 3
-                case "materialButton15":
-                    ConfigHandler.Server3.StopServer();
-                    if (!ConfigHandler.Server3.Online)
-                    {
-                        ConfigHandler.Server3.ResetConsole();
-                        materialButton16.Enabled = false;
-                        materialButton17.Enabled = false;
-                        materialButton14.Enabled = true;
-                        materialButton15.Enabled = false;
-                        materialExpansionPanel3.Description = "Offline";
-                        materialExpansionPanel3.Refresh();
-                    }
-                    break;
-                //
-                // Server 4
-                case "materialButton20":
-                    ConfigHandler.Server4.StopServer();
-                    if (!ConfigHandler.Server4.Online)
-                    {
-                        ConfigHandler.Server4.ResetConsole();
-                        materialButton21.Enabled = false;
-                        materialButton22.Enabled = false;
-                        materialButton19.Enabled = true;
-                        materialButton20.Enabled = false;
-                        materialExpansionPanel4.Description = "Offline";
-                        materialExpansionPanel4.Refresh();
-                    }
-                    break;
-                //
-                // Server 5
-                case "materialButton25":
-                    ConfigHandler.Server5.StopServer();
-                    if (!ConfigHandler.Server5.Online)
-                    {
-                        ConfigHandler.Server5.ResetConsole();
-                        materialButton26.Enabled = false;
-                        materialButton27.Enabled = false;
-                        materialButton24.Enabled = true;
-                        materialButton25.Enabled = false;
-                        materialExpansionPanel5.Description = "Offline";
-                        materialExpansionPanel5.Refresh();
-                    }
-                    break;
-                //
-                // Server 6
-                case "materialButton30":
-                    ConfigHandler.Server6.StopServer();
-                    if (!ConfigHandler.Server6.Online)
-                    {
-                        ConfigHandler.Server6.ResetConsole();
-                        materialButton31.Enabled = false;
-                        materialButton32.Enabled = false;
-                        materialButton29.Enabled = true;
-                        materialButton30.Enabled = false;
-                        materialExpansionPanel6.Description = "Offline";
-                        materialExpansionPanel6.Refresh();
-                    }
-                    break;
-                //
-                // Server 7
-                case "materialButton35":
-                    ConfigHandler.Server7.StopServer();
-                    if (!ConfigHandler.Server7.Online)
-                    {
-                        ConfigHandler.Server7.ResetConsole();
-                        materialButton36.Enabled = false;
-                        materialButton37.Enabled = false;
-                        materialButton34.Enabled = true;
-                        materialButton35.Enabled = false;
-                        materialExpansionPanel7.Description = "Offline";
-                        materialExpansionPanel7.Refresh();
-                    }
-                    break;
-                //
-                // Server 8
-                case "materialButton40":
-                    ConfigHandler.Server8.StopServer();
-                    if (!ConfigHandler.Server8.Online)
-                    {
-                        ConfigHandler.Server8.ResetConsole();
-                        materialButton41.Enabled = false;
-                        materialButton42.Enabled = false;
-                        materialButton39.Enabled = true;
-                        materialButton40.Enabled = false;
-                        materialExpansionPanel8.Description = "Offline";
-                        materialExpansionPanel8.Refresh();
-                    }
-                    break;
-                //
-                // Server 9
-                case "materialButton45":
-                    ConfigHandler.Server9.StopServer();
-                    if (!ConfigHandler.Server9.Online)
-                    {
-                        ConfigHandler.Server9.ResetConsole();
-                        materialButton46.Enabled = false;
-                        materialButton47.Enabled = false;
-                        materialButton44.Enabled = true;
-                        materialButton45.Enabled = false;
-                        materialExpansionPanel9.Description = "Offline";
-                        materialExpansionPanel9.Refresh();
-                    }
-                    break;
-                //
-                // Server 10
-                case "materialButton50":
-                    ConfigHandler.Server10.StopServer();
-                    if (!ConfigHandler.Server10.Online)
-                    {
-                        ConfigHandler.Server10.ResetConsole();
-                        materialButton51.Enabled = false;
-                        materialButton52.Enabled = false;
-                        materialButton49.Enabled = true;
-                        materialButton50.Enabled = false;
-                        materialExpansionPanel10.Description = "Offline";
-                        materialExpansionPanel10.Refresh();
-                    }
-                    break;
+                CheckForIllegalCrossThreadCalls = false;
+                var obj = sender as MaterialButton;
+                obj.Enabled = false;
+                switch (obj.Name)
+                {
+                    // Server 1
+                    case "materialButton1":
+                        ConfigHandler.Server1.StopServer();
+                        if (!ConfigHandler.Server1.Online)
+                        {
+                            ConfigHandler.Server1.ResetConsole();
+                            materialButton4.Enabled = false;
+                            materialButton6.Enabled = false;
+                            materialButton2.Enabled = true;
+                            materialButton1.Enabled = false;
+                            materialExpansionPanel1.Description = "Offline";
+                            materialExpansionPanel1.Refresh();
+                        }
+                        else
+                            obj.Enabled = true;
+                        break;
                     //
-            }
+                    // Server 2
+                    case "materialButton10":
+                        ConfigHandler.Server2.StopServer();
+                        if (!ConfigHandler.Server2.Online)
+                        {
+                            ConfigHandler.Server2.ResetConsole();
+                            materialButton11.Enabled = false;
+                            materialButton12.Enabled = false;
+                            materialButton9.Enabled = true;
+                            materialButton10.Enabled = false;
+                            materialExpansionPanel2.Description = "Offline";
+                            materialExpansionPanel2.Refresh();
+                        }
+                        else
+                            obj.Enabled = true;
+                        break;
+                    //
+                    // Server 3
+                    case "materialButton15":
+                        ConfigHandler.Server3.StopServer();
+                        if (!ConfigHandler.Server3.Online)
+                        {
+                            ConfigHandler.Server3.ResetConsole();
+                            materialButton16.Enabled = false;
+                            materialButton17.Enabled = false;
+                            materialButton14.Enabled = true;
+                            materialButton15.Enabled = false;
+                            materialExpansionPanel3.Description = "Offline";
+                            materialExpansionPanel3.Refresh();
+                        }
+                        else
+                            obj.Enabled = true;
+                        break;
+                    //
+                    // Server 4
+                    case "materialButton20":
+                        ConfigHandler.Server4.StopServer();
+                        if (!ConfigHandler.Server4.Online)
+                        {
+                            ConfigHandler.Server4.ResetConsole();
+                            materialButton21.Enabled = false;
+                            materialButton22.Enabled = false;
+                            materialButton19.Enabled = true;
+                            materialButton20.Enabled = false;
+                            materialExpansionPanel4.Description = "Offline";
+                            materialExpansionPanel4.Refresh();
+                        }
+                        else
+                            obj.Enabled = true;
+                        break;
+                    //
+                    // Server 5
+                    case "materialButton25":
+                        ConfigHandler.Server5.StopServer();
+                        if (!ConfigHandler.Server5.Online)
+                        {
+                            ConfigHandler.Server5.ResetConsole();
+                            materialButton26.Enabled = false;
+                            materialButton27.Enabled = false;
+                            materialButton24.Enabled = true;
+                            materialButton25.Enabled = false;
+                            materialExpansionPanel5.Description = "Offline";
+                            materialExpansionPanel5.Refresh();
+                        }
+                        else
+                            obj.Enabled = true;
+                        break;
+                    //
+                    // Server 6
+                    case "materialButton30":
+                        ConfigHandler.Server6.StopServer();
+                        if (!ConfigHandler.Server6.Online)
+                        {
+                            ConfigHandler.Server6.ResetConsole();
+                            materialButton31.Enabled = false;
+                            materialButton32.Enabled = false;
+                            materialButton29.Enabled = true;
+                            materialButton30.Enabled = false;
+                            materialExpansionPanel6.Description = "Offline";
+                            materialExpansionPanel6.Refresh();
+                        }
+                        else
+                            obj.Enabled = true;
+                        break;
+                    //
+                    // Server 7
+                    case "materialButton35":
+                        ConfigHandler.Server7.StopServer();
+                        if (!ConfigHandler.Server7.Online)
+                        {
+                            ConfigHandler.Server7.ResetConsole();
+                            materialButton36.Enabled = false;
+                            materialButton37.Enabled = false;
+                            materialButton34.Enabled = true;
+                            materialButton35.Enabled = false;
+                            materialExpansionPanel7.Description = "Offline";
+                            materialExpansionPanel7.Refresh();
+                        }
+                        else
+                            obj.Enabled = true;
+                        break;
+                    //
+                    // Server 8
+                    case "materialButton40":
+                        ConfigHandler.Server8.StopServer();
+                        if (!ConfigHandler.Server8.Online)
+                        {
+                            ConfigHandler.Server8.ResetConsole();
+                            materialButton41.Enabled = false;
+                            materialButton42.Enabled = false;
+                            materialButton39.Enabled = true;
+                            materialButton40.Enabled = false;
+                            materialExpansionPanel8.Description = "Offline";
+                            materialExpansionPanel8.Refresh();
+                        }
+                        else
+                            obj.Enabled = true;
+                        break;
+                    //
+                    // Server 9
+                    case "materialButton45":
+                        ConfigHandler.Server9.StopServer();
+                        if (!ConfigHandler.Server9.Online)
+                        {
+                            ConfigHandler.Server9.ResetConsole();
+                            materialButton46.Enabled = false;
+                            materialButton47.Enabled = false;
+                            materialButton44.Enabled = true;
+                            materialButton45.Enabled = false;
+                            materialExpansionPanel9.Description = "Offline";
+                            materialExpansionPanel9.Refresh();
+                        }
+                        else
+                            obj.Enabled = true;
+                        break;
+                    //
+                    // Server 10
+                    case "materialButton50":
+                        ConfigHandler.Server10.StopServer();
+                        if (!ConfigHandler.Server10.Online)
+                        {
+                            ConfigHandler.Server10.ResetConsole();
+                            materialButton51.Enabled = false;
+                            materialButton52.Enabled = false;
+                            materialButton49.Enabled = true;
+                            materialButton50.Enabled = false;
+                            materialExpansionPanel10.Description = "Offline";
+                            materialExpansionPanel10.Refresh();
+                        }
+                        else
+                            obj.Enabled = true;
+                        break;
+                        //
+                }
+            });
         }
 
         // View Server Console

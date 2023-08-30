@@ -136,10 +136,8 @@ namespace MC_Java_Srv_GUI.View
         }
 
         // Update Selected Mod
-        private void materialButton1_Click(object sender, EventArgs e)
-        {
+        private void materialButton1_Click(object sender, EventArgs e) =>
             ForgeAPI.UpdateSelectedMod(materialListBox1.SelectedItem.Text);
-        }
 
         // Remove selected Mod in local mods
         public void removeMod() =>

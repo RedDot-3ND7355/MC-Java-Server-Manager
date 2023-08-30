@@ -19,7 +19,7 @@ namespace MC_Java_Srv_GUI.Core
         public static List<string> GetStats(string address = "localhost", Int32 port = 25565)
         {
             List<string> stats = new List<string>();
-            MineStat ms = new MineStat(address, (ushort)port, (int)SlpProtocol.Json);
+            MineStat ms = new MineStat(address, (ushort)port, (int)SlpProtocol.Automatic);
             stats.Add($"Address: {ms.Address}:{ms.Port}");
             if (ms.ServerUp)
             {

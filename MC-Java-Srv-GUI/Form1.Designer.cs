@@ -2452,7 +2452,7 @@
             this.tabPage6.Controls.Add(this.materialCard3);
             this.tabPage6.Controls.Add(this.materialButton55);
             this.tabPage6.Controls.Add(this.materialTextBox23);
-            this.tabPage6.ImageKey = "curse.png";
+            this.tabPage6.ImageKey = "17494-200.png";
             this.tabPage6.Location = new System.Drawing.Point(4, 39);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Size = new System.Drawing.Size(755, 517);
@@ -2726,6 +2726,7 @@
             this.imageList1.Images.SetKeyName(3, "settings.png");
             this.imageList1.Images.SetKeyName(4, "info.png");
             this.imageList1.Images.SetKeyName(5, "curse.png");
+            this.imageList1.Images.SetKeyName(6, "17494-200.png");
             // 
             // folderBrowserDialog1
             // 

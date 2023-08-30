@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MC_Java_Srv_GUI.Core
@@ -149,7 +150,7 @@ namespace MC_Java_Srv_GUI.Core
             if (File.Exists(Path2Server + "\\" + Version + "\\" + "run.bat"))
             {
                 Path2JAR = Path2Server + "\\" + Version + "\\" + "run.bat";
-                _startInfo = $"/k \"{Path2JAR}\"";
+                _startInfo = $"/k \"{Path2JAR}\" {(UseGUI ? "" : "--nogui")}";
             }
             // Continue
             Server = new Process()
@@ -185,8 +186,13 @@ namespace MC_Java_Srv_GUI.Core
                 return;
             // Graceful stop
             Server.StandardInput.WriteLine("stop");
-            // Delayed kill
-            Task.Delay(5000).ContinueWith(delegate { Server.Close(); });
+            // wait for exit
+            while (!Server.HasExited)
+            {
+                Thread.Sleep(1000);
+                Server.StandardInput.WriteLine("");
+                Server.StandardInput.WriteLine("exit");
+            }
             // Set Server Offline
             Online = false;
         }
