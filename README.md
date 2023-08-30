@@ -2,10 +2,6 @@
 A free tool I made to manage Minecraft Servers.
 [downloads, manages, starts, stops, config editor, stats, downloads curse mods, downloads forge loaders]
 
-NOTE: 
--Updating mods isn't supported YET.
--Starting servers for the first time hangs the UI and takes time. Please be patient :)
-
 Thanks to the following project for making the new features possible!
 https://github.com/CurseForgeCommunity/.NET-APIClient
 
